@@ -6,6 +6,8 @@ import {EditCourseDialogComponent} from '../edit-course-dialog/edit-course-dialo
 import { MatDialog } from '@angular/material/dialog';
 import {map, shareReplay} from 'rxjs/operators';
 import {CoursesHttpService} from '../services/courses-http.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../reducers';
 
 
 
@@ -27,9 +29,9 @@ export class HomeComponent implements OnInit {
 
     constructor(
       private dialog: MatDialog,
-      private coursesHttpService: CoursesHttpService) {
-
-    }
+      private coursesHttpService: CoursesHttpService,
+      private store: Store<AppState>,
+      ){}
 
     ngOnInit() {
       this.reload();
