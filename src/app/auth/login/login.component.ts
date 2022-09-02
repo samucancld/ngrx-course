@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
       },
       (err) => alert('Login failed!'),
     );
+    console.log(JSON.parse(localStorage.getItem('user')))
   }
 
 }
