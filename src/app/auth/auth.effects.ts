@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, Effect, EffectSources, ofType } from '@ngrx/effects';
 import { INIT, Store } from '@ngrx/store';
-import { defer } from 'rxjs';
+import { defer, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { login, logout } from './auth.actions';
 
@@ -31,25 +31,15 @@ export class AuthEffects {
   );
 
   init$ = createEffect(
-    () => this.actions$.pipe(
-      ofType(INIT),
-      map(
-        () => login({user: JSON.parse(localStorage.getItem('user'))})
-      )
-    )
+    () => {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        return of(login(JSON.parse(userData)))
+      } else {
+        return of(logout())
+      }
+    }
   )
-
-  // init$ = defer(
-  //   () => {
-  //     const userData = localStorage.getItem('user');
-  //     if (userData) {
-  //       this.store.dispatch(login(JSON.parse(userData)))
-  //     }
-  //   }
-  // );
-
-
-
 
   constructor(private actions$: Actions, private router: Router, private store: Store) {}
 }
